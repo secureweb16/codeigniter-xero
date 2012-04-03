@@ -5,8 +5,8 @@
 
 	Project Name: PHP Xero
 	Class Name: Xero
-	Author: David Pitman (dependent on the work of others - see below)
-	Date: April 2010
+	Author: Ronan Quirke, Xero (dependent on the work of others, mainly David Pitman - see below)
+	Date: April 2012
 
 	Description:
 	A class for interacting with the xero (xero.com) private application API.  It could also be used for the public application API too, but it hasn't been tested with that.  More documentation for Xero can be found at http://blog.xero.com/developer/api-overview/  It is suggested you become familiar with the API before using this class, otherwise it may not make much sense to you - http://blog.xero.com/developer/api/
@@ -21,6 +21,7 @@
 
 	Copyright (c) 2007 Andy Smith (Oauth*)
 	Copyright (c) 2010 David Pitman (Xero)
+	Copyright (c) 2012 Ronan Quirke, Xero (Xero)
 
 	Permission is hereby granted, free of charge, to any person obtaining a copy
 	of this software and associated documentation files (the "Software"), to deal
