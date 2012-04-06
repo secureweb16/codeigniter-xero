@@ -89,7 +89,7 @@ $new_invoice = array(
 	array(
 		"Type"=>"ACCREC",
 		"Contact" => array(
-			"ContactID" => "[contact id]"
+			"Name" => "API TEST Contact"
 		),
 		"Date" => "2010-04-08",
 		"DueDate" => "2010-04-30",
