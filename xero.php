@@ -159,12 +159,9 @@ class Xero {
 			
 			catch (XeroException $e)
 				  {
-				  //display custom message
-				  echo $e->getMessage() . "<br/>";
+				  return $e->getMessage() . "<br/>";
 				  }
-			if (isset($xero_xml)) {
-				return $temp_xero_response;
-			}
+			
 
 			if ( $this->format == 'xml' && isset($xero_xml) ) {
 				return $xero_xml;
@@ -223,12 +220,9 @@ class Xero {
 			catch (XeroException $e)
 				  {
 				  //display custom message
-				  echo $e->getMessage() . "<br/>";
+				  return $e->getMessage() . "<br/>";
 				  }
-			if (isset($xero_xml)) {
-				return $xero_response;
-			}
-		
+	
 			curl_close($ch);
 			if ( isset($xero_xml) ) {
 				return false;
@@ -1267,11 +1261,5 @@ class XeroApiException extends XeroException {
 		return preg_match('/^<ApiException.*>/', $xml);
 	}
 	
-	public function errorMessage()
-    {
-    //error message
-    $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
-    .': <b>'.$this->getMessage().'</b> is not a valid E-Mail address';
-    return $errorMsg;
-    }
+
 }
