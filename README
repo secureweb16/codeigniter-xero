@@ -57,7 +57,7 @@ define('XERO_SECRET','[APPLICATION SECRET]');
 //instantiate the Xero class with your key, secret and paths to your RSA cert and key
 //the last argument is optional and may be either "xml" or "json" (default)
 //"xml" will give you the result as a SimpleXMLElement object, while 'json' will give you a plain array object
-$xero = new Xero(XERO_KEY, XERO_SECRET, '[path to public certificate]', '[path to private key]' ), 'xml' );
+$xero = new Xero(XERO_KEY, XERO_SECRET, '[path to public certificate]', '[path to private key]', 'xml' );
 
 //the input format for creating a new contact see http://blog.xero.com/developer/api/contacts/ to understand more
 $new_contact = array(
