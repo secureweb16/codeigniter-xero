@@ -63,11 +63,14 @@ class Xero {
 		$this->public_cert = $public_cert;
 		$this->private_key = $private_key;
 		if ( !($this->key) || !($this->secret) || !($this->public_cert) || !($this->private_key) ) {
+			error_log('Stuff missing ');
 			return false;
 		}
-		if ( !file_exists($this->public_cert) || !file_exists($this->private_key) ) {
-			return false;
-		}
+		if(!file_exists($this->public_cert))
+		throw new XeroException('Public cert does not exist: ' . $this->public_cert);
+		if(!file_exists($this->private_key))
+		throw new XeroException('Private key does not exist: ' . $this->private_key);
+		
 		$this->consumer = new OAuthConsumer($this->key, $this->secret);
 		$this->token = new OAuthToken($this->key, $this->secret);
 		$this->signature_method  = new OAuthSignatureMethod_Xero($this->public_cert, $this->private_key);
@@ -144,14 +147,28 @@ class Xero {
 			}
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$temp_xero_response = curl_exec($ch);
-			$xero_xml = simplexml_load_string( $temp_xero_response );
 			curl_close($ch);
-			if ( !$xero_xml ) {
+			try {
+			if(@simplexml_load_string( $temp_xero_response )==false){
+				throw new XeroException($temp_xero_response);
+				$xero_xml = false;
+				}else{
+				$xero_xml = simplexml_load_string( $temp_xero_response );
+				}
+				}
+			
+			catch (XeroException $e)
+				  {
+				  //display custom message
+				  echo $e->getMessage() . "<br/>";
+				  }
+			if (isset($xero_xml)) {
 				return $temp_xero_response;
 			}
-			if ( $this->format == 'xml' ) {
+
+			if ( $this->format == 'xml' && isset($xero_xml) ) {
 				return $xero_xml;
-			} else {
+			} elseif(isset($xero_xml)) {
 				return ArrayToXML::toArray( $xero_xml );
 			}
 		} elseif ( (count($arguments) == 1) || ( is_array($arguments[0]) ) || ( is_a( $arguments[0], 'SimpleXMLElement' ) ) ) {
@@ -194,22 +211,38 @@ class Xero {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$xero_response = curl_exec($ch);
 			if (isset($fh)) fclose($fh);
-			$xero_xml = simplexml_load_string( $xero_response );
-			if (!$xero_xml) {
+			try {
+			if(@simplexml_load_string( $xero_response )==false){
+				throw new XeroException($xero_response);
+
+				}else{
+				$xero_xml = simplexml_load_string( $xero_response );
+				}
+				}
+			
+			catch (XeroException $e)
+				  {
+				  //display custom message
+				  echo $e->getMessage() . "<br/>";
+				  }
+			if (isset($xero_xml)) {
 				return $xero_response;
 			}
+		
 			curl_close($ch);
-			if ( !$xero_xml ) {
+			if ( isset($xero_xml) ) {
 				return false;
 			}
-			if ( $this->format == 'xml' ) {
+			if ( $this->format == 'xml' && isset($xero_xml)) {
 				return $xero_xml;
-			} else {
+			} elseif(isset($xero_xml)) {
 				return ArrayToXML::toArray( $xero_xml );
 			}
 		} else {
 			return false;
 		}
+		
+		
 	}
 
 	public function __get($name) {
@@ -1202,5 +1235,43 @@ class ArrayToXML
     // determine if a variable is an associative array
     public static function isAssoc( $array ) {
         return (is_array($array) && 0 !== count(array_diff_key($array, array_keys(array_keys($array)))));
+    }
+}
+
+class XeroException extends Exception { }
+
+class XeroApiException extends XeroException {
+	private $xml;
+
+	public function __construct($xml_exception)
+	{
+		$this->xml = $xml_exception;
+		$xml = new SimpleXMLElement($xml_exception);
+
+		list($message) = $xml->xpath('/ApiException/Message');
+		list($errorNumber) = $xml->xpath('/ApiException/ErrorNumber');
+		list($type) = $xml->xpath('/ApiException/Type');
+
+		parent::__construct((string)$type . ': ' . (string)$message, (int)$errorNumber);
+
+		$this->type = (string)$type;
+	}
+
+	public function getXML()
+	{
+		return $this->xml;
+	}
+
+	public static function isException($xml)
+	{
+		return preg_match('/^<ApiException.*>/', $xml);
+	}
+	
+	public function errorMessage()
+    {
+    //error message
+    $errorMsg = 'Error on line '.$this->getLine().' in '.$this->getFile()
+    .': <b>'.$this->getMessage().'</b> is not a valid E-Mail address';
+    return $errorMsg;
     }
 }
