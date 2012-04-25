@@ -79,10 +79,10 @@ class Xero {
 
 	public function __call($name, $arguments) {
 		$name = strtolower($name);
-		$valid_methods = array('accounts','contacts','creditnotes','currencies','invoices','organisation','payments','taxrates','trackingcategories');
+		$valid_methods = array('accounts','contacts','creditnotes','currencies','invoices','organisation','payments','taxrates','trackingcategories','items');
 		$valid_post_methods = array('contacts','creditnotes','invoices');
 		$valid_put_methods = array('payments');
-		$valid_get_methods = array('contacts','creditnotes','invoices','accounts','currencies','organisation','taxrates','trackingcategories');
+		$valid_get_methods = array('contacts','creditnotes','invoices','accounts','currencies','organisation','taxrates','trackingcategories','items');
 		$methods_map = array(
 			'accounts' => 'Accounts',
 			'contacts' => 'Contacts',
@@ -92,7 +92,8 @@ class Xero {
 			'organisation' => 'Organisation',
 			'payments' => 'Payments',
 			'taxrates' => 'TaxRates',
-			'trackingcategories' => 'TrackingCategories'
+			'trackingcategories' => 'TrackingCategories',
+			'items' => 'Items'
 		);
 		if ( !in_array($name,$valid_methods) ) {
 			return false;
