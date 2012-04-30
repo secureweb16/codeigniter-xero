@@ -68,7 +68,7 @@ $new_contact = array(
 		"Addresses" => array(
 			"Address" => array(
 				array(
-					"AddressType" => "POSTAL",
+					"AddressType" => "POBOX",
 					"AddressLine1" => "PO Box 100",
 					"City" => "Someville",
 					"PostalCode" => "3890"
