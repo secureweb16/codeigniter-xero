@@ -224,7 +224,7 @@ class Xero {
 				  }
 	
 			curl_close($ch);
-			if ( isset($xero_xml) ) {
+			if (!isset($xero_xml) ) {
 				return false;
 			}
 			if ( $this->format == 'xml' && isset($xero_xml)) {
