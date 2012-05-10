@@ -143,7 +143,7 @@ class Xero {
 			curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_URL, $req->to_url());
 			if ( $modified_after ) {
-				curl_setopt($ch, CURLOPT_HEADER, "If-Modified-Since: $modified_after");
+				curl_setopt($ch, CURLOPT_HEADER, array("If-Modified-Since: $modified_after"));
 			}
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$temp_xero_response = curl_exec($ch);
