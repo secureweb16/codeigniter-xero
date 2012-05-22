@@ -1,6 +1,6 @@
 Name: PHP Xero
 Author: Ronan Quirke, Xero (just very minor bugfixes, vast majority of work done by David Pitman)
-Date: April 2012
+Date: May 2012
 
 Requires: PHP5+
 
@@ -83,6 +83,9 @@ $new_contact = array(
 		)
 	)
 );
+
+//create the contact
+$contact_result = $xero->Contacts( $new_contact );
 
 //the input format for creating a new invoice (or credit note) see http://blog.xero.com/developer/api/invoices/
 $new_invoice = array(
