@@ -6,7 +6,7 @@
 	Project Name: PHP Xero
 	Class Name: Xero
 	Author: Ronan Quirke, Xero (dependent on the work of others, mainly David Pitman - see below)
-	Date: April 2012
+	Date: May 2012
 
 	Description:
 	A class for interacting with the xero (xero.com) private application API.  It could also be used for the public application API too, but it hasn't been tested with that.  More documentation for Xero can be found at http://blog.xero.com/developer/api-overview/  It is suggested you become familiar with the API before using this class, otherwise it may not make much sense to you - http://blog.xero.com/developer/api/
@@ -127,6 +127,7 @@ class Xero {
 				$where = strip_tags(strval($where));
 			}
 			$order = ( count($arguments) > 3 ) ? strip_tags(strval($arguments[3])) : false;
+			$acceptHeader = ( !empty( $arguments[4] ) ) ? $arguments[4] : '';
 			$method = $methods_map[$name];
 			$xero_url = self::ENDPOINT . $method;
 			if ( $filterid ) {
@@ -141,6 +142,13 @@ class Xero {
 			$req  = OAuthRequest::from_consumer_and_token( $this->consumer, $this->token, 'GET',$xero_url);
 			$req->sign_request($this->signature_method , $this->consumer, $this->token);
 			$ch = curl_init();
+			if ( $acceptHeader=='pdf' ) {
+				curl_setopt($ch,CURLOPT_HTTPHEADER,
+						array (
+							"Accept: application/".$acceptHeader
+						)
+					);
+				}
 			curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_URL, $req->to_url());
 			if ( $modified_after ) {
@@ -149,6 +157,11 @@ class Xero {
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			$temp_xero_response = curl_exec($ch);
 			curl_close($ch);
+			if ( $acceptHeader=='pdf' ) {
+				return $temp_xero_response;
+				
+			}
+			
 			try {
 			if(@simplexml_load_string( $temp_xero_response )==false){
 				throw new XeroException($temp_xero_response);
