@@ -96,7 +96,7 @@ class Xero {
 			'items' => 'Items'
 		);
 		if ( !in_array($name,$valid_methods) ) {
-			return false;
+			throw new XeroException('The selected method does not exist. Please use one of the following methods: '.implode(', ',$methods_map));
 		}
 		if ( (count($arguments) == 0) || ( is_string($arguments[0]) ) || ( is_numeric($arguments[0]) ) || ( $arguments[0] === false ) ) {
 			//it's a GET request
