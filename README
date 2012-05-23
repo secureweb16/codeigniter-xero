@@ -59,6 +59,7 @@ define('XERO_SECRET','[APPLICATION SECRET]');
 //"xml" will give you the result as a SimpleXMLElement object, while 'json' will give you a plain array object
 $xero = new Xero(XERO_KEY, XERO_SECRET, '[path to public certificate]', '[path to private key]', 'xml' );
 
+<<<<<<< HEAD
 if($_REQUEST['sample']==""){
 		//the input format for creating a new contact see http://blog.xero.com/developer/api/contacts/ to understand more
 		$new_contact = array(
@@ -81,6 +82,27 @@ if($_REQUEST['sample']==""){
 							"PostalCode" => "3890"
 						)
 					)
+=======
+//the input format for creating a new contact see http://blog.xero.com/developer/api/contacts/ to understand more
+$new_contact = array(
+	array(
+		"Name" => "API TEST Contact",
+		"FirstName" => "TEST",
+		"LastName" => "Contact",
+		"Addresses" => array(
+			"Address" => array(
+				array(
+					"AddressType" => "POBOX",
+					"AddressLine1" => "PO Box 100",
+					"City" => "Someville",
+					"PostalCode" => "3890"
+				),
+				array(
+					"AddressType" => "STREET",
+					"AddressLine1" => "1 Some Street",
+					"City" => "Someville",
+					"PostalCode" => "3890"
+>>>>>>> dfea8c744b4e62c32c726b26f348fdb35b7b70a5
 				)
 			)
 		);
