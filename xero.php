@@ -104,8 +104,8 @@ class Xero {
 				return false;
 			}
 			$filterid = ( count($arguments) > 0 ) ? strip_tags(strval($arguments[0])) : false;
-			$modified_after = ( count($arguments) > 1 ) ? str_replace( 'X','T', date( 'Y-m-dXH:i:s', strtotime($arguments[1])) ) : false;
-			$where = ( count($arguments) > 2 ) ? $arguments[2] : false;
+			if($arguments[1]!=false) $modified_after = ( count($arguments) > 1 ) ? str_replace( 'X','T', date( 'Y-m-dXH:i:s', strtotime($arguments[1])) ) : false;
+			if($arguments[2]!=false) $where = ( count($arguments) > 2 ) ? $arguments[2] : false;
 			if ( is_array($where) && (count($where) > 0) ) {
 				$temp_where = '';
 				foreach ( $where as $wf => $wv ) {
@@ -133,7 +133,7 @@ class Xero {
 			if ( $filterid ) {
 				$xero_url .= "/$filterid";
 			}
-			if ( $where ) {
+			if ( isset($where) ) {
 				$xero_url .= "?where=$where";
 			}
 			if ( $order ) {
@@ -151,7 +151,7 @@ class Xero {
 				}
 			curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
 			curl_setopt($ch, CURLOPT_URL, $req->to_url());
-			if ( $modified_after ) {
+			if ( isset($modified_after) && $modified_after != false) {
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array("If-Modified-Since: $modified_after"));
 			}
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
