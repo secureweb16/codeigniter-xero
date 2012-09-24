@@ -63,7 +63,7 @@ There are 5 possible parameters:
 Further details on filtering GET requests here: http://blog.xero.com/developer/api-overview/http-get/
 
 ### Example Usage:
-
+<code>
 <?php
 
 //include the class file
@@ -184,3 +184,4 @@ if($_REQUEST['sample']=="pdf"){
 	header('Content-type: application/pdf'); header('Content-Disposition: inline; filename="the.pdf"'); 
 	echo ($pdf_invoice);
 }
+</code>
